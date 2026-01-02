@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche de Contacts - Google Sheets</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <div class="connection-status" id="connectionStatus"></div>
+    
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1><i class="fas fa-search"></i> Recherche de Contacts</h1>
+                <p>Recherchez des personnes dans la base de données du cimetière. Données synchronisées avec Google Sheets.</p>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section class="search-section">
+            <h2>Rechercher une personne</h2>
+            <p class="search-description">Saisissez un nom, un prénom ou d'autres informations pour rechercher dans la base de données.</p>
+            
+            <form class="search-form" id="searchForm">
+                <div class="form-group">
+                    <label for="searchInput"><i class="fas fa-user"></i> Nom ou prénom</label>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Ex: Dupont, Adrien, Alain...">
+                </div>
+                
+                <div class="form-group">
+                    <label for="locationInput"><i class="fas fa-map-marker-alt"></i> Lieu de naissance</label>
+                    <input type="text" id="locationInput" class="search-input" placeholder="Ex: HYERES, TOULON, FREJUS...">
+                </div>
+                
+                <div class="form-group">
+                    <label for="statusSelect"><i class="fas fa-tag"></i> Statut</label>
+                    <select id="statusSelect" class="search-input">
+                        <option value="">Tous les statuts</option>
+                        <option value="Attribué">Attribué</option>
+                        <option value="Réservé">Réservé</option>
+                        <option value="Non attribué">Non attribué</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="search-btn">
+                    <i class="fas fa-search"></i> Rechercher
+                </button>
+                
+                <button type="button" class="reset-btn" id="resetBtn">
+                    <i class="fas fa-redo"></i> Réinitialiser
+                </button>
+            </form>
+        </section>
+        
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p>Chargement des données...</p>
+        </div>
+        
+        <section class="results-section" id="resultsSection">
+            <div class="results-header">
+                <h2>Résultats de la recherche</h2>
+                <div class="results-count" id="resultsCount">0 résultats</div>
+            </div>
+            
+            <div id="resultsContainer">
+                <div class="no-results">
+                    <i class="fas fa-search"></i>
+                    <h3>Aucune recherche effectuée</h3>
+                    <p>Utilisez le formulaire ci-dessus pour rechercher des personnes dans la base de données.</p>
+                </div>
+            </div>
+            
+            <div class="pagination" id="pagination" style="display: none;"></div>
+        </section>
+    </div>
+    
+    <!-- Modal pour afficher les détails -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">Détails de la fiche</h2>
+                <button class="close-modal" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body" id="modalBody">
+                <!-- Contenu dynamique -->
+            </div>
+            
+            <div class="modal-actions" id="modalActions">
+                <button class="action-btn print-btn" id="printBtn">
+                    <i class="fas fa-print"></i> Imprimer la fiche
+                </button>
+                
+                <div class="edit-buttons">
+                    <button class="action-btn cancel-btn" id="cancelBtn">
+                        <i class="fas fa-times"></i> Annuler
+                    </button>
+                    <button class="action-btn save-btn" id="saveBtn">
+                        <i class="fas fa-save"></i> Enregistrer
+                    </button>
+                    <button class="action-btn edit-btn" id="editBtn">
+                        <i class="fas fa-edit"></i> Modifier la fiche
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>Base de données du cimetière | Synchronisée avec Google Sheets</p>
+            <p><i class="far fa-copyright"></i> 2023 - Recherche de Contacts</p>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
