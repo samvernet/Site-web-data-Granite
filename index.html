@@ -3,70 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Granite — Registre Sombre</title>
+    <title>Granite — Registre Numérique</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="black-bandeau">
-        <div class="container">
-            <h1>GRANITE<span>.io</span></h1>
-            <p>Système de Gestion des Concessions Funéraires</p>
-        </div>
-    </header>
-
-    <div class="container">
-        <section class="search-module">
-            <form id="searchForm" class="search-grid">
-                <div class="field">
-                    <label>Défunt</label>
-                    <input type="text" id="searchInput" placeholder="Nom ou prénom">
-                </div>
-                <div class="field">
-                    <label>Lieu</label>
-                    <input type="text" id="locationInput" placeholder="Ville">
-                </div>
-                <div class="field">
-                    <label>Statut</label>
-                    <select id="statusSelect">
-                        <option value="">Tous les statuts</option>
-                        <option value="Attribué">Attribué</option>
-                        <option value="Réservé">Réservé</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-dark">Rechercher</button>
-            </form>
-        </section>
-
-        <div id="resultsCount" class="results-info">0 enregistrement(s)</div>
-        <div id="resultsGrid" class="data-grid"></div>
+    <div class="sky-background">
+        <div class="clouds"></div>
     </div>
 
-    <div id="detailModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div id="printArea">
-                <div class="modal-header-fiche">
-                    <h2 id="ficheNom">Fiche Individuelle</h2>
-                    <hr>
-                </div>
-                <div class="modal-body">
-                    <div id="modalData" class="text-info"></div>
-                    <div class="visual-info">
-                        <div id="modalPhoto"></div>
-                        <div id="map"></div>
+    <div class="main-wrapper">
+        <header class="navbar">
+            <div class="logo">GRANITE<span>.io</span></div>
+            <div class="nav-status" id="connectionStatus">Synchronisation...</div>
+        </header>
+
+        <main class="container">
+            <div class="hero-text">
+                <h1>Registre du Cimetière</h1>
+                <p>Interface de consultation des archives</p>
+            </div>
+
+            <section class="search-box">
+                <form id="searchForm">
+                    <div class="input-group">
+                        <label>Défunt</label>
+                        <input type="text" id="searchInput" placeholder="Nom ou Prénom">
                     </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button onclick="window.print()" class="btn-print">Imprimer le rapport</button>
-            </div>
-        </div>
+                    <div class="input-group">
+                        <label>Lieu</label>
+                        <input type="text" id="locationInput" placeholder="Ville">
+                    </div>
+                    <div class="input-group">
+                        <label>Statut</label>
+                        <select id="statusSelect">
+                            <option value="">Tous</option>
+                            <option value="Attribué">Attribué</option>
+                            <option value="Réservé">Réservé</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-search">Rechercher</button>
+                </form>
+            </section>
+
+            <section class="results-container">
+                <div class="meta-info" id="resultsCount">0 dossier trouvé</div>
+                <div id="resultsGrid" class="grid-display">
+                    </div>
+            </section>
+        </main>
     </div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
