@@ -1,5 +1,5 @@
 // URL de votre Web App Google Apps Script (à remplacer après déploiement)
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzVa7CBcnC3Z_VJ1KvMwLDhsjWDuMgT3Mz82TmoZJk3imoLFrQlGOgk0w0hH22KTgM/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCd6Ipu3MLg5CRL5I2xtNKs-yrthJx5H_FgFMJHWPVC6lihkoWLl-f6-RWzsKMN4OK/exec';
 
 // Variables globales
 let allContacts = [];
