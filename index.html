@@ -3,62 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registre du Cimetière</title>
+    <title>Granite — Registre Sombre</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
-    <div class="connection-status" id="connectionStatus">Connexion en cours...</div>
-    
-    <header class="main-header">
+    <header class="black-bandeau">
         <div class="container">
-            <h1><i class="fas fa-monument"></i> Registre du Cimetière</h1>
-            <p>Consultation officielle des concessions et archives</p>
+            <h1>GRANITE<span>.io</span></h1>
+            <p>Système de Gestion des Concessions Funéraires</p>
         </div>
     </header>
-    
+
     <div class="container">
-        <section class="search-section">
-            <form class="search-form" id="searchForm">
-                <div class="form-group">
-                    <label for="searchInput"><i class="fas fa-user"></i> Nom ou prénom</label>
-                    <input type="text" id="searchInput" placeholder="Rechercher un défunt...">
+        <section class="search-module">
+            <form id="searchForm" class="search-grid">
+                <div class="field">
+                    <label>Défunt</label>
+                    <input type="text" id="searchInput" placeholder="Nom ou prénom">
                 </div>
-                <div class="form-group">
-                    <label for="locationInput"><i class="fas fa-map-marker-alt"></i> Ville / Lieu</label>
-                    <input type="text" id="locationInput" placeholder="Lieu de naissance...">
+                <div class="field">
+                    <label>Lieu</label>
+                    <input type="text" id="locationInput" placeholder="Ville">
                 </div>
-                <div class="form-group">
-                    <label for="statusSelect"><i class="fas fa-info-circle"></i> État</label>
+                <div class="field">
+                    <label>Statut</label>
                     <select id="statusSelect">
                         <option value="">Tous les statuts</option>
                         <option value="Attribué">Attribué</option>
                         <option value="Réservé">Réservé</option>
                     </select>
                 </div>
-                <button type="submit" class="search-btn">Filtrer</button>
+                <button type="submit" class="btn-dark">Rechercher</button>
             </form>
         </section>
 
-        <div id="resultsCount" class="results-meta">0 résultat trouvé</div>
-        <div id="resultsGrid" class="results-grid"></div>
+        <div id="resultsCount" class="results-info">0 enregistrement(s)</div>
+        <div id="resultsGrid" class="data-grid"></div>
     </div>
 
     <div id="detailModal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
             <div id="printArea">
-                <div class="modal-layout">
-                    <div id="modalData"></div>
-                    <div class="modal-media">
+                <div class="modal-header-fiche">
+                    <h2 id="ficheNom">Fiche Individuelle</h2>
+                    <hr>
+                </div>
+                <div class="modal-body">
+                    <div id="modalData" class="text-info"></div>
+                    <div class="visual-info">
                         <div id="modalPhoto"></div>
                         <div id="map"></div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button onclick="window.print()" class="btn-print"><i class="fas fa-print"></i> Imprimer la fiche</button>
+                <button onclick="window.print()" class="btn-print">Imprimer le rapport</button>
             </div>
         </div>
     </div>
