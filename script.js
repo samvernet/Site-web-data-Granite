@@ -1,75 +1,63 @@
-const SCRIPT_URL = 'VOTRE_URL_ICI'; // URL Google Apps Script
-let allContacts = [];
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwPTY4xhnCJKfgrv1yuSunibj4w7TG6Do0tsKTK7a04GvkLVI0jEMR-Z3z8fnjA7lh6/exec';
+let allData = [];
 let map = null;
 
-async function loadData() {
-    const status = document.getElementById('connectionStatus');
+async function init() {
     try {
-        const response = await fetch(SCRIPT_URL);
-        allContacts = await response.json();
-        status.textContent = "● Base de données synchronisée";
-        status.style.background = "#27ae60"; status.style.color = "white";
-    } catch (e) {
-        status.textContent = "✗ Erreur de connexion";
-        status.style.background = "#e74c3c";
-    }
+        const resp = await fetch(SCRIPT_URL);
+        allData = await resp.json();
+        console.log("Données chargées");
+    } catch (e) { alert("Erreur de chargement"); }
 }
 
 function render(data) {
     const grid = document.getElementById('resultsGrid');
-    document.getElementById('resultsCount').textContent = `${data.length} résultat(s) trouvé(s)`;
+    document.getElementById('resultsCount').textContent = `${data.length} enregistrement(s) trouvé(s)`;
     window.currentFiltered = data;
-
-    grid.innerHTML = data.map((item, index) => `
-        <div class="card" onclick="openDetail(${index})">
+    grid.innerHTML = data.map((item, i) => `
+        <div class="card" onclick="openFiche(${i})">
             <h3>${item['prénom nom'] || (item.Prénom + ' ' + item.Nom)}</h3>
-            <p><strong>Lieu :</strong> ${item['Ville de naissance'] || '-'}</p>
-            <p><strong>Emplacement :</strong> ${item.Section || ''} / ${item.Numéro || ''}</p>
+            <p><strong>Section :</strong> ${item.Section || '-'}</p>
+            <p><strong>Décès :</strong> ${item['Date de décés'] || '-'}</p>
         </div>
     `).join('');
 }
 
-function openDetail(index) {
+function openFiche(index) {
     const item = window.currentFiltered[index];
-    const dataContainer = document.getElementById('modalData');
-    const photoContainer = document.getElementById('modalPhoto');
     const lat = parseFloat(item.Lat || item.X);
     const lng = parseFloat(item.Long || item.Y);
 
-    dataContainer.innerHTML = `
-        <h2 style="margin-bottom:20px; color:#2c3e50;">Fiche de renseignement</h2>
-        <div class="info-item"><label>Nom Complet</label><span>${item['prénom nom'] || (item.Prénom + ' ' + item.Nom)}</span></div>
-        <div class="info-item"><label>Naissance</label><span>${item['Date de naissance'] || '-'} à ${item['Ville de naissance'] || '-'}</span></div>
-        <div class="info-item"><label>Date de Décès</label><span>${item['Date de décés'] || '-'}</span></div>
-        <div class="info-item"><label>Renouvellement Concession</label><span style="color:#c0392b;">${item['Date de renouvellement'] || 'Non spécifié'}</span></div>
-        <div class="info-item"><label>Coordonnées GPS</label><span style="font-family:monospace;">${lat || '-'}, ${lng || '-'}</span></div>
-        <div style="background:#f9f9f9; padding:15px; border-radius:4px; margin-top:10px;">
-            <strong>Localisation :</strong> Section ${item.Section || '-'} | Rangée ${item.Rangée || '-'} | N° ${item.Numéro || '-'}
-        </div>
+    document.getElementById('modalData').innerHTML = `
+        <div class="info-item"><label>Défunt</label><span>${item['prénom nom'] || (item.Prénom + ' ' + item.Nom)}</span></div>
+        <div class="info-item"><label>Né le</label><span>${item['Date de naissance'] || '-'} à ${item['Ville de naissance'] || '-'}</span></div>
+        <div class="info-item"><label>Décédé le</label><span>${item['Date de décés'] || '-'}</span></div>
+        <div class="info-item"><label>Renouvellement le</label><span style="color:red">${item['Date de renouvellement'] || 'À prévoir'}</span></div>
+        <div class="info-item"><label>Localisation</label><span>Section ${item.Section || '-'} / Rang ${item.Rangée || '-'} / N° ${item.Numéro || '-'}</span></div>
+        <div class="info-item"><label>GPS</label><span>${lat || 'N/A'}, ${lng || 'N/A'}</span></div>
     `;
 
     const photoUrl = item['Url photo stèle'];
-    photoContainer.innerHTML = photoUrl ? `<img src="${photoUrl}">` : `<div style="height:200px; background:#eee; display:flex; align-items:center; justify-content:center;">Aucune photo</div>`;
+    document.getElementById('modalPhoto').innerHTML = photoUrl ? `<img src="${photoUrl}">` : `<div style="padding:20px; background:#f0f0f0; border-radius:12px; text-align:center">Pas de photo</div>`;
 
     document.getElementById('detailModal').style.display = "block";
 
-    // CARTE
     setTimeout(() => {
         if (map) map.remove();
-        if(!isNaN(lat) && !isNaN(lng)) {
+        if(!isNaN(lat)) {
             map = L.map('map').setView([lat, lng], 19);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
             L.marker([lat, lng]).addTo(map);
         }
-    }, 200);
+    }, 300);
 }
 
 document.querySelector('.close-modal').onclick = () => document.getElementById('detailModal').style.display = "none";
-document.getElementById('searchForm').addEventListener('submit', (e) => {
+document.getElementById('searchForm').onsubmit = (e) => {
     e.preventDefault();
-    const query = document.getElementById('searchInput').value.toLowerCase();
-    const filtered = allContacts.filter(c => (c['prénom nom'] || "").toLowerCase().includes(query));
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const filtered = allData.filter(c => (c['prénom nom'] || "").toLowerCase().includes(q));
     render(filtered);
-});
+};
 
-loadData();
+init();
