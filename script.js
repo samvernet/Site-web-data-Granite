@@ -1,63 +1,44 @@
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwPTY4xhnCJKfgrv1yuSunibj4w7TG6Do0tsKTK7a04GvkLVI0jEMR-Z3z8fnjA7lh6/exec';
-let allData = [];
-let map = null;
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwPTY4xhnCJKfgrv1yuSunibj4w7TG6Do0tsKTK7a04GvkLVI0jEMR-Z3z8fnjA7lh6/exec'; // L'URL de votre Apps Script
+let allContacts = [];
 
 async function init() {
     try {
-        const resp = await fetch(SCRIPT_URL);
-        allData = await resp.json();
-        console.log("Données chargées");
-    } catch (e) { alert("Erreur de chargement"); }
+        const response = await fetch(SCRIPT_URL);
+        allContacts = await response.json();
+        document.getElementById('connectionStatus').textContent = "● Système Prêt";
+        document.getElementById('connectionStatus').style.color = "#4ade80";
+    } catch (e) {
+        document.getElementById('connectionStatus').textContent = "Erreur réseau";
+    }
 }
 
 function render(data) {
     const grid = document.getElementById('resultsGrid');
-    document.getElementById('resultsCount').textContent = `${data.length} enregistrement(s) trouvé(s)`;
-    window.currentFiltered = data;
-    grid.innerHTML = data.map((item, i) => `
-        <div class="card" onclick="openFiche(${i})">
+    document.getElementById('resultsCount').textContent = `${data.length} dossier(s) trouvé(s)`;
+    
+    grid.innerHTML = data.map(item => `
+        <div class="card">
             <h3>${item['prénom nom'] || (item.Prénom + ' ' + item.Nom)}</h3>
-            <p><strong>Section :</strong> ${item.Section || '-'}</p>
+            <p><strong>Lieu :</strong> ${item['Ville de naissance'] || '-'}</p>
             <p><strong>Décès :</strong> ${item['Date de décés'] || '-'}</p>
+            <div class="badge badge-${(item.Etat || "").toLowerCase()}">${item.Etat || 'N/A'}</div>
         </div>
     `).join('');
 }
 
-function openFiche(index) {
-    const item = window.currentFiltered[index];
-    const lat = parseFloat(item.Lat || item.X);
-    const lng = parseFloat(item.Long || item.Y);
-
-    document.getElementById('modalData').innerHTML = `
-        <div class="info-item"><label>Défunt</label><span>${item['prénom nom'] || (item.Prénom + ' ' + item.Nom)}</span></div>
-        <div class="info-item"><label>Né le</label><span>${item['Date de naissance'] || '-'} à ${item['Ville de naissance'] || '-'}</span></div>
-        <div class="info-item"><label>Décédé le</label><span>${item['Date de décés'] || '-'}</span></div>
-        <div class="info-item"><label>Renouvellement le</label><span style="color:red">${item['Date de renouvellement'] || 'À prévoir'}</span></div>
-        <div class="info-item"><label>Localisation</label><span>Section ${item.Section || '-'} / Rang ${item.Rangée || '-'} / N° ${item.Numéro || '-'}</span></div>
-        <div class="info-item"><label>GPS</label><span>${lat || 'N/A'}, ${lng || 'N/A'}</span></div>
-    `;
-
-    const photoUrl = item['Url photo stèle'];
-    document.getElementById('modalPhoto').innerHTML = photoUrl ? `<img src="${photoUrl}">` : `<div style="padding:20px; background:#f0f0f0; border-radius:12px; text-align:center">Pas de photo</div>`;
-
-    document.getElementById('detailModal').style.display = "block";
-
-    setTimeout(() => {
-        if (map) map.remove();
-        if(!isNaN(lat)) {
-            map = L.map('map').setView([lat, lng], 19);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-            L.marker([lat, lng]).addTo(map);
-        }
-    }, 300);
-}
-
-document.querySelector('.close-modal').onclick = () => document.getElementById('detailModal').style.display = "none";
-document.getElementById('searchForm').onsubmit = (e) => {
+document.getElementById('searchForm').addEventListener('submit', (e) => {
     e.preventDefault();
-    const q = document.getElementById('searchInput').value.toLowerCase();
-    const filtered = allData.filter(c => (c['prénom nom'] || "").toLowerCase().includes(q));
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const loc = document.getElementById('locationInput').value.toLowerCase();
+    const status = document.getElementById('statusSelect').value;
+
+    const filtered = allContacts.filter(c => {
+        const nameMatch = (c['prénom nom'] || "").toLowerCase().includes(query);
+        const locMatch = (c['Ville de naissance'] || "").toLowerCase().includes(loc);
+        const statusMatch = !status || c.Etat === status;
+        return nameMatch && locMatch && statusMatch;
+    });
     render(filtered);
-};
+});
 
 init();
