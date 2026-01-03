@@ -3,62 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion Cimetière - Recherche</title>
+    <title>Registre de Granit — Archives</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="connectionStatus" class="status-bar">Initialisation...</div>
+    <nav class="top-nav">
+        <div class="status-dot" id="statusDot"></div>
+        <span id="statusText">Connexion...</span>
+    </nav>
 
     <header>
-        <div class="container">
-            <h1><i class="fas fa-monument"></i> Registre du Cimetière</h1>
-            <p>Consultation et recherche des concessions en temps réel</p>
-        </div>
+        <h1>Registre du Cimetière</h1>
+        <p>Consultation des archives et des concessions</p>
     </header>
 
-    <main class="container">
-        <section class="search-card">
-            <form id="searchForm" class="search-grid">
-                <div class="input-group">
-                    <label><i class="fas fa-user"></i> Nom / Prénom</label>
-                    <input type="text" id="searchInput" placeholder="Rechercher un défunt...">
-                </div>
-                <div class="input-group">
-                    <label><i class="fas fa-map-marker-alt"></i> Lieu de naissance</label>
-                    <input type="text" id="locationInput" placeholder="Ville...">
-                </div>
-                <div class="input-group">
-                    <label><i class="fas fa-filter"></i> État</label>
-                    <select id="statusSelect">
-                        <option value="">Tous les états</option>
-                        <option value="Attribué">Attribué</option>
-                        <option value="Réservé">Réservé</option>
-                        <option value="Non attribué">Non attribué</option>
-                    </select>
-                </div>
-                <div class="button-group">
-                    <button type="submit" class="btn-primary"><i class="fas fa-search"></i> Filtrer</button>
-                    <button type="button" id="resetBtn" class="btn-secondary">Effacer</button>
-                </div>
-            </form>
-        </main>
+    <div class="search-container">
+        <form id="searchForm">
+            <input type="text" id="searchInput" placeholder="Nom du défunt...">
+            <input type="text" id="locationInput" placeholder="Ville ou lieu...">
+            <select id="statusSelect">
+                <option value="">Tous les statuts</option>
+                <option value="Attribué">Attribué</option>
+                <option value="Réservé">Réservé</option>
+                <option value="Libre">Libre</option>
+            </select>
+            <button type="submit">Rechercher</button>
+        </form>
+    </div>
 
-        <section class="results-area">
-            <div class="results-meta">
-                <span id="resultsCount">0 résultat</span>
+    <main class="content">
+        <div id="resultsMeta">0 résultat</div>
+        <div id="loading" class="minimal-loader">Recherche en cours...</div>
+        <div id="resultsGrid" class="results-grid">
             </div>
-            <div id="loading" class="loader" style="display:none;">
-                <div class="spinner"></div>
-                <p>Chargement du tableau...</p>
-            </div>
-            <div id="resultsTableContainer">
-                <div class="empty-state">
-                    <i class="fas fa-database"></i>
-                    <p>En attente des données...</p>
-                </div>
-            </div>
-        </section>
     </main>
 
     <script src="script.js"></script>
