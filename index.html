@@ -3,41 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registre de Granit — Archives</title>
+    <title>Granite — Registre Numérique</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <nav class="top-nav">
-        <div class="status-dot" id="statusDot"></div>
-        <span id="statusText">Connexion...</span>
-    </nav>
-
-    <header>
-        <h1>Registre du Cimetière</h1>
-        <p>Consultation des archives et des concessions</p>
-    </header>
-
-    <div class="search-container">
-        <form id="searchForm">
-            <input type="text" id="searchInput" placeholder="Nom du défunt...">
-            <input type="text" id="locationInput" placeholder="Ville ou lieu...">
-            <select id="statusSelect">
-                <option value="">Tous les statuts</option>
-                <option value="Attribué">Attribué</option>
-                <option value="Réservé">Réservé</option>
-                <option value="Libre">Libre</option>
-            </select>
-            <button type="submit">Rechercher</button>
-        </form>
+    <div class="sky-background">
+        <div class="clouds"></div>
     </div>
 
-    <main class="content">
-        <div id="resultsMeta">0 résultat</div>
-        <div id="loading" class="minimal-loader">Recherche en cours...</div>
-        <div id="resultsGrid" class="results-grid">
+    <div class="main-wrapper">
+        <header class="navbar">
+            <div class="logo">GRANITE<span>.io</span></div>
+            <div class="nav-status" id="connectionStatus">Synchronisation...</div>
+        </header>
+
+        <main class="container">
+            <div class="hero-text">
+                <h1>Registre du Cimetière</h1>
+                <p>Interface de consultation des archives</p>
             </div>
-    </main>
+
+            <section class="search-box">
+                <form id="searchForm">
+                    <div class="input-group">
+                        <label>Défunt</label>
+                        <input type="text" id="searchInput" placeholder="Nom ou Prénom">
+                    </div>
+                    <div class="input-group">
+                        <label>Lieu</label>
+                        <input type="text" id="locationInput" placeholder="Ville">
+                    </div>
+                    <div class="input-group">
+                        <label>Statut</label>
+                        <select id="statusSelect">
+                            <option value="">Tous</option>
+                            <option value="Attribué">Attribué</option>
+                            <option value="Réservé">Réservé</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-search">Rechercher</button>
+                </form>
+            </section>
+
+            <section class="results-container">
+                <div class="meta-info" id="resultsCount">0 dossier trouvé</div>
+                <div id="resultsGrid" class="grid-display">
+                    </div>
+            </section>
+        </main>
+    </div>
 
     <script src="script.js"></script>
 </body>
