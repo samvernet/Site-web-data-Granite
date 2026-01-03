@@ -5,39 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Granite — Registre Numérique</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="sky-background">
-        <div class="clouds"></div>
-    </div>
+    <div class="sky-background"></div>
 
     <div class="main-wrapper">
         <header class="navbar">
             <div class="logo">GRANITE<span>.io</span></div>
-            <div class="nav-status" id="connectionStatus">Synchronisation...</div>
+            <div class="nav-status" id="connectionStatus">Initialisation...</div>
         </header>
 
         <main class="container">
             <div class="hero-text">
                 <h1>Registre du Cimetière</h1>
-                <p>Interface de consultation des archives</p>
+                <p>Système de consultation des archives et concessions</p>
             </div>
 
             <section class="search-box">
                 <form id="searchForm">
                     <div class="input-group">
-                        <label>Défunt</label>
+                        <label><i class="fas fa-user"></i> Défunt</label>
                         <input type="text" id="searchInput" placeholder="Nom ou Prénom">
                     </div>
                     <div class="input-group">
-                        <label>Lieu</label>
-                        <input type="text" id="locationInput" placeholder="Ville">
+                        <label><i class="fas fa-map-marker-alt"></i> Lieu</label>
+                        <input type="text" id="locationInput" placeholder="Ville de naissance">
                     </div>
                     <div class="input-group">
-                        <label>Statut</label>
+                        <label><i class="fas fa-filter"></i> Statut</label>
                         <select id="statusSelect">
-                            <option value="">Tous</option>
+                            <option value="">Tous les statuts</option>
                             <option value="Attribué">Attribué</option>
                             <option value="Réservé">Réservé</option>
                         </select>
@@ -47,11 +46,28 @@
             </section>
 
             <section class="results-container">
-                <div class="meta-info" id="resultsCount">0 dossier trouvé</div>
+                <div class="meta-info" id="resultsCount">Prêt pour la recherche</div>
                 <div id="resultsGrid" class="grid-display">
                     </div>
             </section>
         </main>
+    </div>
+
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="printArea">
+                <div id="modalData">
+                    </div>
+                <div id="modalPhoto" class="photo-container">
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="window.print()" class="btn-print">
+                    <i class="fas fa-print"></i> Imprimer la fiche complète
+                </button>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
