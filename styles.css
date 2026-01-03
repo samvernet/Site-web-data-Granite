@@ -1,148 +1,100 @@
 :root {
-    --bg: #ffffff;
-    --accent: #1d1d1f;
-    --text-main: #1d1d1f;
-    --text-muted: #86868b;
-    --border: #e5e5e7;
-    --card-bg: #f5f5f7;
+    --glass: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    --accent: #3b82f6;
+    --text: #1e293b;
 }
 
-body {
+body, html {
     margin: 0;
     font-family: 'Inter', sans-serif;
-    background-color: var(--bg);
-    color: var(--text-main);
-    -webkit-font-smoothing: antialiased;
+    color: var(--text);
+    overflow-x: hidden;
 }
 
-/* Barre de statut minimaliste */
-.top-nav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* FOND CIEL ET NUAGES */
+.sky-background {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom, #7ec0ee 0%, #ececec 100%);
+    z-index: -1;
+}
+
+/* Animation de nuages stylisés */
+.clouds {
+    position: absolute;
+    width: 100%; height: 100%;
+    background-image: url('https://www.transparenttextures.com/patterns/cloudy-day.png');
+    opacity: 0.4;
+    animation: moveClouds 60s linear infinite;
+}
+
+@keyframes moveClouds {
+    from { background-position: 0 0; }
+    to { background-position: 1000px 0; }
+}
+
+.main-wrapper { padding: 0 20px; }
+
+.navbar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 0; max-width: 1100px; margin: 0 auto;
+}
+
+.logo { font-weight: 800; font-size: 1.5rem; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.logo span { color: var(--accent); }
+
+.nav-status { font-size: 0.7rem; text-transform: uppercase; color: #fff; background: rgba(0,0,0,0.2); padding: 5px 12px; border-radius: 20px; }
+
+.container { max-width: 1000px; margin: 0 auto; padding-top: 50px; }
+
+.hero-text { text-align: center; margin-bottom: 40px; }
+.hero-text h1 { font-size: 3rem; margin: 0; color: #fff; text-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+.hero-text p { font-size: 1.2rem; color: #f0f9ff; }
+
+/* RECHERCHE STYLE GLASSMORPHISM */
+.search-box {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
     padding: 15px;
-    font-size: 12px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    border-bottom: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
 
-.status-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: #ccc; margin-right: 8px;
-}
-.status-dot.active { background: #27ae60; box-shadow: 0 0 8px #27ae60; }
+#searchForm { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 15px; align-items: flex-end; }
 
-header {
-    text-align: center;
-    padding: 80px 20px 40px;
+.input-group label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; color: #64748b; }
+.input-group input, .input-group select {
+    width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 12px; outline: none; background: white;
 }
 
-header h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 48px;
-    margin: 0;
-    font-weight: 700;
+.btn-search {
+    background: var(--accent); color: white; border: none; padding: 12px 30px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.2s;
 }
+.btn-search:hover { background: #2563eb; transform: translateY(-2px); }
 
-header p {
-    color: var(--text-muted);
-    font-size: 18px;
-    margin-top: 10px;
-}
+/* RÉSULTATS */
+.results-container { margin-top: 40px; }
+.meta-info { margin-bottom: 20px; color: #fff; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 
-/* Barre de recherche flottante */
-.search-container {
-    max-width: 900px;
-    margin: 0 auto 60px;
-    padding: 0 20px;
-}
-
-#searchForm {
-    display: flex;
-    background: var(--card-bg);
-    padding: 10px;
-    border-radius: 18px;
-    gap: 10px;
-}
-
-#searchForm input, #searchForm select {
-    flex: 1;
-    border: none;
-    background: transparent;
-    padding: 15px;
-    font-size: 16px;
-    outline: none;
-}
-
-#searchForm button {
-    background: var(--accent);
-    color: white;
-    border: none;
-    padding: 0 30px;
-    border-radius: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: opacity 0.2s;
-}
-
-#searchForm button:hover { opacity: 0.8; }
-
-/* Grille de résultats */
-.content { max-width: 1000px; margin: 0 auto; padding: 0 20px 100px; }
-
-#resultsMeta {
-    margin-bottom: 20px;
-    font-size: 14px;
-    color: var(--text-muted);
-}
-
-.results-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
-}
+.grid-display { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
 
 .card {
-    background: white;
-    border: 1px solid var(--border);
-    padding: 25px;
-    border-radius: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: var(--glass);
+    backdrop-filter: blur(8px);
+    padding: 25px; border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    transition: 0.3s;
 }
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
-}
-
-.card h3 {
-    margin: 0 0 10px 0;
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-}
-
-.card p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: var(--text-muted);
-}
+.card:hover { transform: translateY(-5px); background: white; }
+.card h3 { margin: 0 0 10px; font-size: 1.3rem; }
+.card p { margin: 5px 0; font-size: 0.9rem; color: #475569; }
 
 .badge {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 4px 12px;
-    border-radius: 100px;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    background: #eee;
+    margin-top: 15px; display: inline-block; padding: 5px 12px; border-radius: 100px; font-size: 0.7rem; font-weight: 700;
+    background: #e2e8f0;
 }
+.badge-attribué { background: #dcfce7; color: #166534; }
 
-.badge-attribué { background: #e2f5ea; color: #155724; }
-.badge-réservé { background: #fff3cd; color: #856404; }
-
-@media (max-width: 768px) {
-    #searchForm { flex-direction: column; border-radius: 25px; }
-    header h1 { font-size: 32px; }
-}
+@media (max-width: 768px) { #searchForm { grid-template-columns: 1fr; } .hero-text h1 { font-size: 2rem; } }
