@@ -2,6 +2,7 @@
 // CONFIGURATION : Remplacez par votre URL de déploiement Google Apps Script
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwPTY4xhnCJKfgrv1yuSunibj4w7TG6Do0tsKTK7a04GvkLVI0jEMR-Z3z8fnjA7lh6/exec'; 
 
+
 let allData = [];
 let map = null;
 
@@ -9,20 +10,18 @@ async function init() {
     try {
         const response = await fetch(SCRIPT_URL);
         allData = await response.json();
+        
+        // FILTRE DYNAMIQUE : Lit vos états réels sans rien inventer
+        const select = document.getElementById('steleSelect');
+        const etatsReels = [...new Set(allData.map(i => i['Etat de la stèle']).filter(e => e))];
+        select.innerHTML = '<option value="">Tous les états</option>' + 
+            etatsReels.map(e => `<option value="${e}">${e}</option>`).join('');
+        
         document.getElementById('resultsCount').textContent = allData.length + " enregistrements indexés";
         render(allData);
-    } catch (e) { document.getElementById('resultsCount').textContent = "Erreur de connexion"; }
-}
-
-function getCleanImgUrl(url) {
-    if (!url) return null;
-    if (url.startsWith('data:image')) return url;
-    if (url.length > 500) return `data:image/jpeg;base64,${url}`;
-    if (url.includes('drive.google.com')) {
-        const fileId = url.split('/d/')[1]?.split('/')[0] || url.split('id=')[1];
-        return `https://docs.google.com/uc?export=view&id=${fileId}`;
+    } catch (e) { 
+        document.getElementById('resultsCount').textContent = "Erreur de connexion"; 
     }
-    return url;
 }
 
 function render(data) {
@@ -30,8 +29,8 @@ function render(data) {
     grid.innerHTML = data.map((item, index) => `
         <div class="card" onclick="showFiche(${index})">
             <h3>${item['prénom nom']}</h3>
-            <p><i class="fas fa-map-marker-alt"></i> ${item.Section || 'N/A'} — Rang ${item.Rangée || '-'}</p>
-            <div class="status-pill">${item['Etat de la stèle'] || 'ACTIF'}</div>
+            <p><i class="fas fa-monument"></i> ${item['Etat de la stèle'] || 'Non renseigné'}</p>
+            <div class="status-pill">${item.Section || 'N/A'}</div>
         </div>
     `).join('');
 }
@@ -43,10 +42,11 @@ function showFiche(index) {
 
     document.getElementById('ficheNom').textContent = item['prénom nom'];
     
+    // RÉINTÉGRATION STRICTE DU LIEU DE NAISSANCE
     document.getElementById('modalData').innerHTML = `
         <div class="info-row"><i class="fas fa-user"></i><div><label>Identité</label><span>${item['prénom nom']} (${item.Age || '?'} ans)</span></div></div>
         
-        <div class="info-row"><i class="fas fa-baby"></i><div><label>Naissance</label><span>Le ${item['Date de naissance'] || '?'} à ${item['Lieu de naissance'] || item['Ville de naissance'] || '-'} (${item['code postal de naissance'] || ''})</span></div></div>
+        <div class="info-row"><i class="fas fa-baby"></i><div><label>Lieu de naissance</label><span>${item['Lieu de naissance'] || item['Ville de naissance'] || '-'} (${item['code postal de naissance'] || ''})</span></div></div>
         
         <div class="info-row"><i class="fas fa-church"></i><div><label>Lieu de sépulture</label><span>${item['Nom du cimetière']}<br>${item.Commune} (${item['code postal.']})</span></div></div>
         
@@ -60,11 +60,13 @@ function showFiche(index) {
         <div class="info-row"><i class="fas fa-location-arrow"></i><div><label>Coordonnées GPS</label><span style="font-family:monospace;">${lat || 'N/A'}, ${lng || 'N/A'}</span></div></div>
     `;
 
-    const photoUrl = getCleanImgUrl(item['Url photo stèle']);
-    document.getElementById('modalPhoto').innerHTML = photoUrl ? `<img src="${photoUrl}">` : `<div class="no-photo-box">Pas de photo</div>`;
+    // Gestion Photo
+    const photoUrl = item['Url photo stèle'];
+    document.getElementById('modalPhoto').innerHTML = photoUrl ? `<img src="${photoUrl}" style="width:100%; border-radius:20px;">` : `<div class="no-photo">Pas de photo</div>`;
 
     document.getElementById('detailModal').style.display = "block";
 
+    // Carte
     setTimeout(() => {
         if (map) { map.remove(); map = null; }
         if (!isNaN(lat) && !isNaN(lng)) {
@@ -76,21 +78,23 @@ function showFiche(index) {
     }, 450);
 }
 
+// Recherche et filtrage
 document.getElementById('searchForm').onsubmit = (e) => {
     e.preventDefault();
     const q = document.getElementById('searchInput').value.toLowerCase();
-    const s = document.getElementById('steleSelect').value.toLowerCase();
+    const s = document.getElementById('steleSelect').value;
+    
     const filtered = allData.filter(i => {
         const nom = (i['prénom nom'] || "").toLowerCase();
-        const etat = (i['Etat de la stèle'] || "").toLowerCase();
+        const etat = i['Etat de la stèle'] || "";
         return nom.includes(q) && (s === "" || etat === s);
     });
+    
     window.currentFiltered = filtered;
     render(filtered);
     document.getElementById('resultsCount').textContent = filtered.length + " résultat(s) trouvé(s)";
 };
 
 document.querySelector('.close-btn').onclick = () => { document.getElementById('detailModal').style.display = "none"; };
-window.onclick = (e) => { if (e.target == document.getElementById('detailModal')) document.getElementById('detailModal').style.display = "none"; };
 
 init();
