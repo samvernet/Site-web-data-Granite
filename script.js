@@ -1,7 +1,7 @@
 
 // CONFIGURATION : Remplacez par votre URL de déploiement Google Apps Script
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwPTY4xhnCJKfgrv1yuSunibj4w7TG6Do0tsKTK7a04GvkLVI0jEMR-Z3z8fnjA7lh6/exec'; 
-const SCRIPT_URL = 'VOTRE_URL_ICI';
+
 let allData = [];
 let map = null;
 
