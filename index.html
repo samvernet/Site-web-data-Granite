@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GRANITE.io — Registre Cimetière</title>
+    <title>GRANITE.io — Registre Numérique</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
     <header class="top-nav">
         <div class="container-flex">
             <div class="logo">GRANITE<span>.io</span></div>
-            <div class="system-status"><span class="dot"></span> Système synchronisé</div>
+            <div class="system-status">
+                <span class="dot"></span> Système synchronisé
+            </div>
         </div>
     </header>
 
@@ -22,6 +25,7 @@
             <div class="hero-section">
                 <p class="subtitle">Interface d'administration</p>
                 <h1>Registre Numérique<br>Cimetière <span>de Granite</span></h1>
+                <p class="tagline">Base de données officielle des concessions et défunts</p>
             </div>
 
             <section class="search-container">
@@ -31,20 +35,16 @@
                         <input type="text" id="searchInput" placeholder="Nom du défunt">
                     </div>
                     <div class="search-field border-left">
-                        <label>État Stèle</label>
+                        <label>État de la stèle</label>
                         <select id="steleSelect">
-                            <option value="">Tous les états</option>
-                            <option value="Bon état">Bon état</option>
-                            <option value="Dégradé">Dégradé</option>
-                            <option value="À restaurer">À restaurer</option>
-                            <option value="Péril">En péril</option>
+                            <option value="">Chargement des états...</option>
                         </select>
                     </div>
                     <button type="submit" class="btn-filter">Filtrer la base</button>
                 </form>
             </section>
 
-            <div id="resultsCount" class="results-info">Initialisation...</div>
+            <div id="resultsCount" class="results-info">0 enregistrements indexés</div>
             <div id="resultsGrid" class="cards-grid"></div>
         </div>
     </main>
@@ -59,7 +59,8 @@
                 </div>
                 <div class="fiche-grid">
                     <div class="fiche-col">
-                        <div id="modalData"></div>
+                        <div id="modalData">
+                            </div>
                     </div>
                     <div class="fiche-col">
                         <div id="modalPhoto" class="img-preview"></div>
@@ -67,7 +68,9 @@
                     </div>
                 </div>
             </div>
-            <button onclick="window.print()" class="btn-print"><i class="fas fa-print"></i> Imprimer la fiche</button>
+            <button onclick="window.print()" class="btn-print">
+                <i class="fas fa-print"></i> Imprimer le rapport complet
+            </button>
         </div>
     </div>
 
