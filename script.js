@@ -1,6 +1,6 @@
 
 // CONFIGURATION : Remplacez par votre URL de déploiement Google Apps Script
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwPTY4xhnCJKfgrv1yuSunibj4w7TG6Do0tsKTK7a04GvkLVI0jEMR-Z3z8fnjA7lh6/exec'; 
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwhzB4nq1mxgobo9mQtGbaQN1pxOaEScrOZolUoRk9Pkyw7io3HrGhnil0fcFBXVlsv/exec'; 
 
 
 let allData = [];
