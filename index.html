@@ -14,9 +14,7 @@
     <header class="top-nav">
         <div class="container-flex">
             <div class="logo">GRANITE<span>.io</span></div>
-            <div class="system-status">
-                <span class="dot"></span> Système synchronisé
-            </div>
+            <div class="system-status"><span class="dot"></span> Système synchronisé</div>
         </div>
     </header>
 
@@ -25,7 +23,6 @@
             <div class="hero-section">
                 <p class="subtitle">Interface d'administration</p>
                 <h1>Registre Numérique<br>Cimetière <span>de Granite</span></h1>
-                <p class="tagline">Accès sécurisé aux archives et emplacements funéraires</p>
             </div>
 
             <section class="search-container">
@@ -35,15 +32,13 @@
                         <input type="text" id="searchInput" placeholder="Nom du défunt">
                     </div>
                     <div class="search-field border-left">
-                        <label>Lieu de naissance</label>
-                        <input type="text" id="locationInput" placeholder="Ville ou Pays">
-                    </div>
-                    <div class="search-field border-left">
-                        <label>Statut</label>
-                        <select id="statusSelect">
+                        <label>État Stèle</label>
+                        <select id="steleSelect">
                             <option value="">Tous les états</option>
-                            <option value="Attribué">Attribué</option>
-                            <option value="Libre">Libre</option>
+                            <option value="Bon état">Bon état</option>
+                            <option value="Dégradé">Dégradé</option>
+                            <option value="À restaurer">À restaurer</option>
+                            <option value="Péril">En péril</option>
                         </select>
                     </div>
                     <button type="submit" class="btn-filter">Filtrer la base</button>
@@ -73,7 +68,7 @@
                     </div>
                 </div>
             </div>
-            <button onclick="window.print()" class="btn-print"><i class="fas fa-print"></i> Imprimer le rapport complet</button>
+            <button onclick="window.print()" class="btn-print"><i class="fas fa-print"></i> Imprimer le rapport</button>
         </div>
     </div>
 
