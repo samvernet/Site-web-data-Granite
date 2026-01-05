@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GRANITE.io — Registre Numérique</title>
+    <title>GRANITE.io — Registre Cimetière</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -24,8 +24,8 @@
         <div class="container">
             <div class="hero-section">
                 <p class="subtitle">Interface d'administration</p>
-                <h1>Registre Numérique<br>Cimetière <span>de Granite</span></h1>
-                <p class="tagline">Base de données officielle des concessions et défunts</p>
+                <h1>Registre Numérique<br>Cimetière <span>/</span></h1>
+                <p class="tagline">Accès sécurisé aux archives et emplacements funéraires</p>
             </div>
 
             <section class="search-container">
@@ -35,16 +35,22 @@
                         <input type="text" id="searchInput" placeholder="Nom du défunt">
                     </div>
                     <div class="search-field border-left">
-                        <label>État de la stèle</label>
-                        <select id="steleSelect">
-                            <option value="">Chargement des états...</option>
+                        <label>Lieu</label>
+                        <input type="text" id="locationInput" placeholder="Ville de naissance">
+                    </div>
+                    <div class="search-field border-left">
+                        <label>Statut</label>
+                        <select id="statusSelect">
+                            <option value="">Tous les états</option>
+                            <option value="Attribué">Attribué</option>
+                            <option value="Libre">Libre</option>
                         </select>
                     </div>
                     <button type="submit" class="btn-filter">Filtrer la base</button>
                 </form>
             </section>
 
-            <div id="resultsCount" class="results-info">0 enregistrements indexés</div>
+            <div id="resultsCount" class="results-info">Initialisation...</div>
             <div id="resultsGrid" class="cards-grid"></div>
         </div>
     </main>
@@ -59,8 +65,7 @@
                 </div>
                 <div class="fiche-grid">
                     <div class="fiche-col">
-                        <div id="modalData">
-                            </div>
+                        <div id="modalData"></div>
                     </div>
                     <div class="fiche-col">
                         <div id="modalPhoto" class="img-preview"></div>
@@ -68,9 +73,7 @@
                     </div>
                 </div>
             </div>
-            <button onclick="window.print()" class="btn-print">
-                <i class="fas fa-print"></i> Imprimer le rapport complet
-            </button>
+            <button onclick="window.print()" class="btn-print"><i class="fas fa-print"></i> Imprimer le rapport complet</button>
         </div>
     </div>
 
